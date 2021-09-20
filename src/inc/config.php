@@ -1,6 +1,9 @@
 <?php
 // Database Settings
-define('DB_HOST','localhost');
+define('DATABASE_HOST','localhost');
+define('DATABASE_NAME','jdtstore');
+define('DATABASE_USER','root');
+define('DATABASE_PASSWORD','');
 
 // HTTP headers
 define('HTTP403','HTTP/1.1 403 Forbidden');

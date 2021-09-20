@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\ProductModel;
+use App\Models\Product;
 
 class ProductController extends BaseController {
 
@@ -10,12 +10,17 @@ class ProductController extends BaseController {
     }
 
     public function GET() {
-        $products = new ProductModel();
-        $product_list = $products->getAll();
-        echo $product_list;
+        $products = new Product();
+        
+        $productList = $products->findAllProducts();
+
+        
+
+
     }
 
     public function POST() {
+        
     }
 
     public function DELETE() {
