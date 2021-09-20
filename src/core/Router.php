@@ -36,7 +36,7 @@ class Router {
             header(HTTP403);  
             exit();          
         }else if($route->is_valid()) {
-            $route->get_controller()->process_request();
+            $route->get_controller()->{$this->requestMethod}();
         }else{
             header(HTTP404);            
             exit();
