@@ -1,3 +1,3 @@
 <?php
 
-echo 'Hello from config';
+define('DB_HOST','localhost');
