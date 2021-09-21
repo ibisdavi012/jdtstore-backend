@@ -43,17 +43,13 @@ class Furniture extends Product {
     }
 
     public function toArray(){
-        return array(
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-            'type' => $this->getType(),
-            'custom_attributes' => array(
-                'height' => $this->getHeight(),
-                'width' => $this->getWidth(),
-                'length' => $this->getLength())
-        );
+
+        $attributes =parent::toArray();
+        $attributes['height'] = $this->getHeight();
+        $attributes['width'] = $this->getWidth();
+        $attributes['length'] = $this->getLength();
+        
+        return $attributes;
     }
 
     public function save(){}

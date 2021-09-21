@@ -10,7 +10,7 @@ abstract class ProductModel extends BaseModel {
 
     public function findAll() {
         
-        $productList = $this->selectAll();
+        $productList = parent::findAll();
 
         if ($productList != null) 
         {

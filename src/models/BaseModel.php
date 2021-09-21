@@ -65,7 +65,7 @@ abstract class BaseModel {
         return $query_result;
     }
 
-    protected function selectAll()
+    protected function findAll()
     {
         return $this->execute_query("SELECT * FROM {$this->db_table}");
     }
@@ -93,9 +93,25 @@ abstract class BaseModel {
 
     }
 
-    public abstract function toArray();
-    public abstract function findById($id);
-    public abstract function findAll();
+    public function findById($id) {
+        $result = $this->execute_query("SELECT * FROM {$this->db_table} WHERE id = $id");
+        
+        if(count($result)) {   
+            
+            $type = "App\\Models\\" . ucfirst($result[0]['type']);                
+               
+            $model = !class_exists($type,true) ? new Product() : new $type();                    
+                        
+            $model->parse($result[0]);
+
+            return $model->toArray();      
+
+        }
+
+        return null;
+    }
+
+    public abstract function toArray();        
     public abstract function save();
     public abstract function delete();
     public abstract function update();

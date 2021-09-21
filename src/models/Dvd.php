@@ -22,17 +22,12 @@ class Dvd extends Product {
     }
     
     public function toArray(){
-        return array(
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-            'type' => $this->getType(),
-            'custom_attributes' => array('size' => $this->getSize()),
-        );
+        
+        $attributes =parent::toArray();
+        $attributes['size'] = $this->getSize();
+        return $attributes;
     }
 
-    public function findById($id){}
     public function save(){}
     public function delete(){}
     public function update(){}

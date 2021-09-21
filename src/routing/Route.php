@@ -10,9 +10,12 @@ class Route {
 
     private $requestMethod;
 
-    public function __construct($endpoint,$requestMethod){
+    private $requestedId;
+
+    public function __construct($endpoint,$requestMethod,$requestedId){
         $this->endpoint = $endpoint;
-        $this->requestMethod = $requestMethod;        
+        $this->requestMethod = $requestMethod; 
+        $this->requestedId = $requestedId;       
     }
 
     public function load() {
@@ -28,7 +31,7 @@ class Route {
         }
         else {
             $this->controller = new $controllerName();
-            $this->controller->{$this->requestMethod}();
+            $this->controller->{$this->requestMethod}($this->requestedId);
         }              
     }
 

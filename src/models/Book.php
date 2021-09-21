@@ -22,14 +22,9 @@ class Book extends Product {
     }
     
     public function toArray(){
-        return array(
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-            'type' => $this->getType(),
-            'custom_attributes' => array('weight' => $this->getWeight()),
-        );
+        $attributes =parent::toArray();
+        $attributes['weight'] = $this->getWeight();
+        return $attributes;
     }
 
     public function save(){}

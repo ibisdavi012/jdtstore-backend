@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class BaseController {
+abstract class BaseController {
 
     public function __call($name,$args) {
         $this->send_http_status(404);
@@ -27,9 +27,22 @@ class BaseController {
    
     protected function send_response($reponse,$error=false) {
         header_remove('Set-Cookie');
+        
         header(HTTP_CORS);  
+        
         header(HTTP_JSON);
-        echo json_encode(array('status'=> $error ? 'ERROR' : 'OK', 'content' => $reponse));
+
+        echo json_encode(
+            array(
+                    'status'        => $error ? 'ERROR' : 'OK', 
+                    'api_version'   =>'1.0',
+                    'content'       => $reponse
+            )
+        );
     }
-  
+
+    public abstract function GET($id);
+    public abstract function POST($id);
+    public abstract function DELETE($id);
+
 }
