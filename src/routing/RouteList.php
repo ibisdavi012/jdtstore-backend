@@ -10,17 +10,21 @@ class RouteList {
         'base'
     );
 
-    public static function getTarget($endpoint) {
+    public static function getTargetControllerName($endpoint) {
 
-        $routes_keys = array_keys(self::$validRoutes);
+        $routes_keys = array_keys(self::$validRoutes);        
 
         if (in_array($endpoint, $routes_keys)) {
-            return self::$validRoutes[$endpoint];
+            $target = self::$validRoutes[$endpoint];
+            $fullTargetName = "App\\Controllers\\{$target}";            
+            if(!class_exists($fullTargetName,true)){return null;}
+            
+            return $fullTargetName;
         }
         elseif (in_array($endpoint, self::$protectedRoutes)) {
             return false;
         }
-        else{
+        else{            
             return null;
         }
     }

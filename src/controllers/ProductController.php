@@ -16,18 +16,50 @@ class ProductController extends BaseController {
     
         if(is_null($id))
         {
-            $productList = $products->findAll();
+            $result = $products->findAll();
         }
         else{
-            $productList = $products->findById($id);
-        }
+            $result = $products->findById($id);
+        }        
         
-        $this->send_response($productList);
+        if(is_null($result)) {
+            header(HTTP404);
+            exit;
+        }
+
+        $this->send_response($result);
 
     }
 
-    public function POST($id) {
+    public function POST() {
+        $post_body = file_get_contents('php://input');
         
+        $attributes = json_decode($post_body,true);
+        
+        if(is_array($attributes)){        
+            $attribute_names = array_keys($attributes);
+        }
+        else {
+            header(HTTP400);
+            exit;
+        }
+
+        if(in_array("type",$attribute_names)) {
+            $type = 'App\\Models\\' . ucfirst($attributes['type']);
+            
+            if(class_exists($type,true))
+            {
+                $product = new $type();
+                $product->parse($post_body);                
+            }
+            else {
+                header(HTTP400);
+                exit;
+            }
+        } else {
+            header(HTTP400);
+            exit;
+        }        
     }
 
     public function DELETE($id) {

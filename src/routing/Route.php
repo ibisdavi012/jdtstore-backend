@@ -18,19 +18,17 @@ class Route {
         $this->requestedId = $requestedId;       
     }
 
-    public function load() {
+    public function load() {        
         
-        $target = RouteList::getTarget($this->endpoint);
+        $controller = RouteList::getTargetControllerName($this->endpoint);
     
-        $controllerName = "App\\Controllers\\{$target}";
-    
-        if($target === null || !class_exists($controllerName,true)) {
-            header(HTTP404);
-        }elseif($target === false) {
+        if ($controller === false) {
             header(HTTP403);
+        }elseif($controller === null) {
+            header(HTTP404);
         }
         else {
-            $this->controller = new $controllerName();
+            $this->controller = new $controller();
             $this->controller->{$this->requestMethod}($this->requestedId);
         }              
     }

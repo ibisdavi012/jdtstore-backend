@@ -84,13 +84,35 @@ abstract class BaseModel {
         }
         
     }
+
+    private function parseFromArray($source) {
+        
+        $this->extractAttributes($source,$this->parseable_attributes);
+        
+        $customAttributes = json_decode($source['custom_attributes'],true);
+        
+        $this->extractAttributes($customAttributes,$this->custom_attributes);
+
+    }
+
+    private function parseFromString($source) {
+        $attributes = json_decode($source,true);
+        $this->extractAttributes($attributes,$this->parseable_attributes);
+        $this->extractAttributes($attributes,$this->custom_attributes);        
+    }
+
        
     public function parse($source) {
 
-        $this->extractAttributes($source,$this->parseable_attributes);
-        $customAttributes = json_decode($source['custom_attributes'],true);
-        $this->extractAttributes($customAttributes,$this->custom_attributes);
-
+        if(is_array($source)) {
+            $this->parseFromArray($source);
+        }
+        elseif(is_string($source)) {
+            $this->parseFromString($source);
+        } else{
+            return null;
+        }
+     
     }
 
     public function findById($id) {

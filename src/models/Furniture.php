@@ -4,7 +4,9 @@ namespace App\Models;
 class Furniture extends Product {
 
     protected $height = 0;
+
     protected $width = 0;
+    
     protected $length = 0;
     
     public function __construct(){
@@ -48,7 +50,7 @@ class Furniture extends Product {
         $attributes['height'] = $this->getHeight();
         $attributes['width'] = $this->getWidth();
         $attributes['length'] = $this->getLength();
-        
+
         return $attributes;
     }
 

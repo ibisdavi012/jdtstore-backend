@@ -26,6 +26,7 @@ abstract class BaseController {
    
    
     protected function send_response($reponse,$error=false) {
+        
         header_remove('Set-Cookie');
         
         header(HTTP_CORS);  
@@ -42,7 +43,7 @@ abstract class BaseController {
     }
 
     public abstract function GET($id);
-    public abstract function POST($id);
+    public abstract function POST();
     public abstract function DELETE($id);
 
 }
