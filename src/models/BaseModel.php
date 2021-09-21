@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use PDO; 
+use App\Utils\PropertyParser;
 /**
 * BaseModel - All models extends this Model.
 *
@@ -17,6 +18,10 @@ abstract class BaseModel {
     protected $db_connection_handle = null;
 
     protected $query_statement = null;
+
+    protected $parseable_attributes;
+
+    protected $custom_attributes;
     
     public function __construct($db_table) {
         $this->db_table = $db_table;
@@ -31,10 +36,6 @@ abstract class BaseModel {
         } catch (PDOException $e){
             echo $e->getMessage();
         }
-    }
-
-    protected function getDbTable() {
-        return $db_table;
     }
 
     public function execute_query($query,$parameters = array()) {
@@ -68,10 +69,27 @@ abstract class BaseModel {
     {
         return $this->execute_query("SELECT * FROM {$this->db_table}");
     }
-       
-    public abstract function parse($source);
 
-    protected abstract function extractCustomProperties($source);
+    private function extractAttributes($source,$attributesList) {
+    
+        foreach ($source as $column => $value) {
+            $property = "set" . ucfirst($column);                           
+            if(is_array($attributesList) && in_array($column,$attributesList)) {
+                $this->$property($value);
+            }
+        }
+        
+    }
+       
+    public function parse($source) {
+
+        $this->extractAttributes($source,$this->parseable_attributes);
+        $customAttributes = json_decode($source['custom_attributes'],true);
+        $this->extractAttributes($customAttributes,$this->custom_attributes);
+        echo '<pre>';
+        print_r($this);
+        echo '</pre>';
+    }
 
     public abstract function getById();
     public abstract function save();

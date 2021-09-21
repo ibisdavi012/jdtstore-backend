@@ -1,34 +1,24 @@
 <?php
 namespace App\Models;
-use App\Utils\PropertyParser;
 
 class Dvd extends ProductModel {
 
     protected $size = 0;
-       
-    public function parse($source){        
+    
+    public function __construct(){
+        $this->parseable_attributes = array('id','sku','name','price','type');
         
-        $parseable_properties = array('id','sku','name','price','type');
+        $this->custom_attributes = array('size');
 
-        PropertyParser::parseDefaultProperties($this, $source, $parseable_properties);
-        
-        $this->extractCustomProperties($source['specifics']);
-        
-    }
-
-    public function extractCustomProperties($source){
-        
-        echo '<hr><pr>';
-        $customProperties = json_decode(null,true);
-        echo 'Size: ' . $customProperties['size'];
-
-        echo '<hr><pre>';
-        var_dump($this);
-        echo '</pre>';
-    }
+        parent::__construct();
+    }   
 
     public function setSize($size) {
         $this->size = $size;
+    }
+
+    public function getSize($size) {
+        return $this->size;
     }
 
     public function getById(){}
