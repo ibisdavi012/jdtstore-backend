@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace App\Routing;
 
 use App\Controllers\BaseController;
 
@@ -15,32 +15,22 @@ class Router {
     
     private $requestURI;
     private $uriSegments;    
-    private $requestedRoute;
+    private $requestedEndPoint;
     private $requestMethod;
 
     public function __construct() {    
         
         $this->requestURI = strtolower($_SERVER['REQUEST_URI']);        
         $this->uriSegments = explode('/',$this->requestURI);
-        $this->requestedRoute = $this->uriSegments[1];                
+        $this->requestedEndPoint = $this->uriSegments[1];                
         $this->requestMethod = $_SERVER['REQUEST_METHOD']; 
-        
-        $this->dispatch();
     }
 
     public function dispatch() {
         
-        $route = new Route($this->requestedRoute);
+        $route = new Route($this->requestedEndPoint,$this->requestMethod);
 
-        if($route->is_forbidden()){
-            header(HTTP403);  
-            exit();          
-        }else if($route->is_valid()) {
-            $route->get_controller()->{$this->requestMethod}();
-        }else{
-            header(HTTP404);            
-            exit();
-        }
+        $route->load();
     }
     
 }

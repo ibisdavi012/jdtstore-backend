@@ -65,16 +65,20 @@ abstract class BaseModel {
         return $query_result;
     }
 
-    protected function findAll()
+    protected function selectAll()
     {
         return $this->execute_query("SELECT * FROM {$this->db_table}");
     }
 
     private function extractAttributes($source,$attributesList) {
-    
+
+        if(is_null($source) || !$source){
+            return false;
+        }
+
         foreach ($source as $column => $value) {
             $property = "set" . ucfirst($column);                           
-            if(is_array($attributesList) && in_array($column,$attributesList)) {
+            if(is_array($attributesList) && in_array($column,$attributesList)) {                
                 $this->$property($value);
             }
         }
@@ -86,13 +90,15 @@ abstract class BaseModel {
         $this->extractAttributes($source,$this->parseable_attributes);
         $customAttributes = json_decode($source['custom_attributes'],true);
         $this->extractAttributes($customAttributes,$this->custom_attributes);
-        echo '<pre>';
-        print_r($this);
-        echo '</pre>';
+
     }
 
-    public abstract function getById();
+    public abstract function toArray();
+    public abstract function findById($id);
+    public abstract function findAll();
     public abstract function save();
     public abstract function delete();
     public abstract function update();
+    
+   
 }

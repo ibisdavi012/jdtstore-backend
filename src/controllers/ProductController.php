@@ -12,11 +12,9 @@ class ProductController extends BaseController {
     public function GET() {
         $products = new Product();
         
-        $productList = $products->findAllProducts();
-
-        
-
-
+        $productList = $products->findById(2);
+        header(HTTP_JSON);        
+        echo json_encode($productList);        
     }
 
     public function POST() {

@@ -2,24 +2,15 @@
 namespace App\Models;
 
 abstract class ProductModel extends BaseModel {
-    protected $id;
-    
-    protected $sku;
-
-    protected $name;
-    
-    protected $price;
-
-    protected $type;
 
     public function __construct()
     {
         parent::__construct('products');
     }
 
-    public function findAllProducts() {
+    public function findAll() {
         
-        $productList = $this->findAll();
+        $productList = $this->selectAll();
 
         if ($productList != null) 
         {
@@ -33,60 +24,14 @@ abstract class ProductModel extends BaseModel {
                 
                 $product->parse($productList[$index]);
 
-                $products[] = $product;                                        
+                $products[] = $product->toArray();                                        
             }
-
-            return $products;
-        }
-
-
-        return null;
-
         
+            return $products;
+        }        
     }
 
-    // ID
-    public function setId($id) {
-        $this->id = $id;
-    }
-    public function getId() {
-        return $this->id;
-    }
 
-    // SKU
-    public function setSku($sku) {
-        $this->sku = $sku;
-    }
-
-    public function getSku() {
-        return $this->sku;
-    }
-
-    // Name
-    public function setName($name) {
-        $this->name = $name;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    // Price
-    public function setPrice($price) {
-        $this->price = $price;
-    }
-
-    public function getPrice() {
-        return $this->price;
-    }
-
-    // Type
-    public function setType($type) {
-        $this->type = $type;
-    }
-
-    public function getType() {
-        return $this->type;
-    }
+    public abstract function toArray();
 
 }
