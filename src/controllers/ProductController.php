@@ -36,30 +36,22 @@ class ProductController extends BaseController {
         
         $attributes = json_decode($post_body,true);
         
-        if(is_array($attributes)){        
-            $attribute_names = array_keys($attributes);
+        if(!is_array($attributes) || !in_array("type",array_keys($attributes)))
+        {
+            header(HTTP400);
+            exit; 
+        }
+        
+        $type = 'App\\Models\\' . ucfirst($attributes['type']);
+
+        if(class_exists($type,true)){            
+            $product = new $type();
+            $product->parse($post_body); 
         }
         else {
             header(HTTP400);
-            exit;
+            exit; 
         }
-
-        if(in_array("type",$attribute_names)) {
-            $type = 'App\\Models\\' . ucfirst($attributes['type']);
-            
-            if(class_exists($type,true))
-            {
-                $product = new $type();
-                $product->parse($post_body);                
-            }
-            else {
-                header(HTTP400);
-                exit;
-            }
-        } else {
-            header(HTTP400);
-            exit;
-        }        
     }
 
     public function DELETE($id) {
