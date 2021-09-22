@@ -7,31 +7,40 @@ use App\Controllers\BaseController;
 class Router {
     
     private $requestURI;
+
     private $uriSegments;    
+
     private $requestedEndPoint;
+
     private $requestedId;
+
     private $requestMethod;
+
     private $routes;
+
     private $protectedRoutes; 
 
     public function __construct() { 
 
         $this->routes = array();
 
-        $this->protectedRoutes = array();       
-        
+        $this->protectedRoutes = array();  
+
+        $this->evaluateRequestURI();
+    }
+
+    private function evaluateRequestURI() {
+
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'];         
+
         $this->requestURI = strtolower($_SERVER['REQUEST_URI']);  
-        
-        // Remove trailing '/'
-        if (substr($this->requestURI,-1) === '/') {            
-            $this->requestURI = substr($this->requestURI,0,strlen($this->requestURI)-1);  
-        }
+
+        // Remove trailing '/' of the URI
+        $this->requestURI = preg_replace("/\/$/","", $this->requestURI);
         
         $this->uriSegments = explode('/',$this->requestURI);
         
         $this->requestedEndPoint = $this->uriSegments[1];   
-
-        $this->requestMethod = $_SERVER['REQUEST_METHOD']; 
 
         if (count($this->uriSegments) > 2)
         {            
@@ -43,22 +52,25 @@ class Router {
                 exit;
             }
         }
-
     }
     
-    public function addRoute($endpoint,$targetController){
+    public function addRoute($endpoint,$targetController)
+    {
         $this->routes[$endpoint] = $targetController; 
     }
 
-    public function addProtectedRoute($endpoint){
+    public function addProtectedRoute($endpoint)
+    {
         array_push($protectedRoutes,$endpoint);
     }
 
-    private function validateAccess($endpoint) {
+    private function validateAccess($endpoint) 
+    {
         return false;
     }
 
-    public function validateTargetController() {
+    public function validateTargetController() 
+    {
 
         $route_names = array_keys($this->routes);        
        
@@ -77,7 +89,8 @@ class Router {
         }
     }
 
-    public function dispatch() {
+    public function dispatch() 
+    {
         
         $controller = $this->validateTargetController();
 
@@ -89,9 +102,7 @@ class Router {
         else {
             $this->controller = new $controller();
             $this->controller->{$this->requestMethod}($this->requestedId);
-        }  
-
-        
+        }          
     }
     
 }
