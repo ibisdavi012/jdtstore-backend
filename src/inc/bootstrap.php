@@ -12,7 +12,7 @@ require_once 'src/inc/config.php';
 $router = new Router();
 
 // Add Routes (Valid and Protected)
-$router->addRoute('products','ProductController');
+$router->addRoute('products', 'ProductController');
 
 // Dispatch the request to the right Controller
 $router->dispatch();

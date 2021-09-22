@@ -47,6 +47,7 @@ class ProductController extends BaseController {
         if(class_exists($type,true)){            
             $product = new $type();
             $product->parse($post_body); 
+            $product->save();
         }
         else {
             header(HTTP400);
