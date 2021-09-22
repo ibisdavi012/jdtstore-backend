@@ -27,7 +27,18 @@ class Book extends Product {
         return $attributes;
     }
 
-    public function save(){}
+    public function save(){
+        $save_result = $this->execute_query("INSERT INTO products 
+        (sku,name, price, type, custom_attributes) 
+    VALUES 
+        (?,?,?,?,?)",array(
+            $this->getSku(),
+            $this->getName(),
+            $this->getPrice(),
+            $this->getType(),
+            "{\"weight\":{$this->getWeight()}}"
+        ));
+    }
     public function delete(){}
     public function update(){}
 

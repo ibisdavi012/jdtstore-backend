@@ -49,18 +49,20 @@ abstract class BaseModel {
 
         // Bind parameters
         for ($paramIndex=1; $paramIndex <= count($parameters); $paramIndex++) { 
-            $this->query_statement->bindParam($paramIndex,$parameters[$paramIndex]);
+            $this->query_statement->bindParam($paramIndex,$parameters[$paramIndex - 1]);
+        }       
+
+        // Ejecutamos     
+        if(!$this->query_statement->execute()){
+            return false;
         }
-        
-        // Ejecutamos
-        $this->query_statement->execute();
-        
+                     
         // Mostramos los resultados
         $query_result = array();
 
         while ($row = $this->query_statement->fetch()){
             $query_result[] = $row; 
-        }        
+        }   
 
         return $query_result;
     }

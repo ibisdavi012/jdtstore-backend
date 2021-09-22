@@ -10,6 +10,7 @@ class ProductController extends BaseController {
     public function __construct() {
     }
 
+
     public function GET($id) {
         
         $products = new Product();
@@ -31,14 +32,15 @@ class ProductController extends BaseController {
 
     }
 
-    public function POST() {
+    public function POST() {          
+        
         $post_body = file_get_contents('php://input');
         
         $attributes = json_decode($post_body,true);
         
         if(!is_array($attributes) || !in_array("type",array_keys($attributes)))
         {
-            header(HTTP400);
+            header(HTTP404);
             exit; 
         }
         
@@ -48,6 +50,8 @@ class ProductController extends BaseController {
             $product = new $type();
             $product->parse($post_body); 
             $product->save();
+            $this-send_response('OK');
+            
         }
         else {
             header(HTTP400);

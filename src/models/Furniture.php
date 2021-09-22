@@ -56,11 +56,18 @@ class Furniture extends Product {
 
     public function save(){
         
-
-        $this->execute_query("INSERT INTO products 
+        $save = $this->execute_query("INSERT INTO products 
                                 (sku,name, price, type, custom_attributes) 
                             VALUES 
-                                (?,?,?,?,?)",array());
+                                (?,?,?,?,?)",array(
+                                    $this->getSku(),
+                                    $this->getName(),
+                                    $this->getPrice(),
+                                    $this->getType(),
+                                    "{\"height\":{$this->getHeight()},
+                                        \"width\":{$this->getWidth()},
+                                        \"length\":{$this->getLength()}}",
+                                ));
     }
     public function delete(){}
     public function update(){}

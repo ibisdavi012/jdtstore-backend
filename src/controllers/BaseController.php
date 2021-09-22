@@ -5,33 +5,20 @@ namespace App\Controllers;
 abstract class BaseController {
 
     public function __call($name,$args) {
-        $this->send_http_status(404);
-    }
-
-    public function send_http_status($status) {
-        
-        switch($status) {
-            case 403:
-                header(HTTP403);
-                break;
-            case 404:
-                header(HTTP404);
-                break;
-            default:
-            break;
+        header(HTTP404);
+    } 
+   
+        public function sendHeaders() {
+            header(HTTP_CORS);
+            header(HTTP_ACEH);
+            header(HTTP_ACAH);            
+            header(HTTP_ACAM);        
+            header(HTTP_JSON);
         }
+
+       protected function send_response($reponse,$error=false) {    
         
-        exit();
-    }
-   
-   
-    protected function send_response($reponse,$error=false) {
-        
-        header_remove('Set-Cookie');
-        
-        header(HTTP_CORS);  
-        
-        header(HTTP_JSON);
+        $this->sendHeaders();
 
         echo json_encode(
             array(
@@ -40,6 +27,10 @@ abstract class BaseController {
                     'content'       => $reponse
             )
         );
+    }
+    
+    public function OPTIONS() {        
+        $this->sendHeaders();
     }
 
     public abstract function GET($id);
