@@ -16,7 +16,7 @@ abstract class BaseController {
             header(HTTP_JSON);
         }
 
-       protected function send_response($message, $affected_rows, $data,$error=false) {    
+       protected function send_response($message, $affected_rows, $content,$error=false) {    
         
         $this->sendHeaders();
 
@@ -26,7 +26,7 @@ abstract class BaseController {
                     'api_version'   =>'1.0',
                     'message'       => $message,
                     'affected_rows' => $affected_rows,
-                    'data'          => $data
+                    'content'       => $content
             )
         );
 
