@@ -18,11 +18,12 @@ class ProductController extends BaseController {
             if(is_null($result)){            
                 $this->send_response('No products were found.',0,null);
             }else {
-                $productList[] = array();
-                foreach ($products as $product) {
+                $productList = array();
+                foreach ($result as $product) {
                     $productList[] = $product->toArray();
                 }
-                
+
+                $this->send_response("",count($result),$productList);                
             }
         }
         else{
@@ -30,9 +31,7 @@ class ProductController extends BaseController {
             header(HTTP404);
         }        
         
-
         $this->send_response($result);
-
     }
 
     public function POST() {          
