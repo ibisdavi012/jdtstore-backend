@@ -16,7 +16,7 @@ abstract class BaseController {
             header(HTTP_JSON);
         }
 
-       protected function send_response($reponse,$error=false) {    
+       protected function send_response($message, $affected_rows, $data,$error=false) {    
         
         $this->sendHeaders();
 
@@ -24,9 +24,13 @@ abstract class BaseController {
             array(
                     'status'        => $error ? 'ERROR' : 'OK', 
                     'api_version'   =>'1.0',
-                    'content'       => $reponse
+                    'message'       => $message,
+                    'affected_rows' => $affected_rows,
+                    'data'          => $data
             )
         );
+
+        exit;
     }
     
     public function OPTIONS() {        

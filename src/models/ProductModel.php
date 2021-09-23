@@ -9,13 +9,13 @@ abstract class ProductModel extends BaseModel {
     }
 
     public function findAll() {
+        $products = array();
         
         $productList = parent::findAll();
 
         if ($productList != null) 
         {
-            $products = array();
-
+        
             for ($index=0; $index < count($productList); $index++) { 
                
                 $productType = "App\\Models\\" . ucfirst($productList[$index]['type']);                
@@ -24,7 +24,7 @@ abstract class ProductModel extends BaseModel {
                 
                 $product->parse($productList[$index]);
 
-                $products[] = $product->toArray();                                        
+                $products[] = $product;
             }
         
             return $products;

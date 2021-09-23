@@ -7,26 +7,29 @@ use App\Models\Book;
 
 class ProductController extends BaseController {
 
-    public function __construct() {
-    }
-
-
     public function GET($id) {
         
         $products = new Product();
     
         if(is_null($id))
-        {
+        {                        
             $result = $products->findAll();
+            
+            if(is_null($result)){            
+                $this->send_response('No products were found.',0,null);
+            }else {
+                $productList[] = array();
+                foreach ($products as $product) {
+                    $productList[] = $product->toArray();
+                }
+                
+            }
         }
         else{
             $result = $products->findById($id);
+            header(HTTP404);
         }        
         
-        if(is_null($result)) {
-            header(HTTP404);
-            exit;
-        }
 
         $this->send_response($result);
 
