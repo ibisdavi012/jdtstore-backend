@@ -56,7 +56,7 @@ class Furniture extends Product {
 
     public function save(){
         
-        $save = $this->execute_query("INSERT INTO products 
+        $save = $this->execute_query("INSERT INTO eav_products 
                                 (sku,name, price, type, custom_attributes) 
                             VALUES 
                                 (?,?,?,?,?)",array(

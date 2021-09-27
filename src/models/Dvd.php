@@ -18,7 +18,7 @@ class Dvd extends Product {
     }
 
     public function getSize() {
-        return $this->size . "Mb";
+        return $this->size;
     }
     
     public function toArray(){
@@ -29,7 +29,7 @@ class Dvd extends Product {
     }
 
     public function save(){
-        $save_result = $this->execute_query("INSERT INTO products 
+        $save_result = $this->execute_query("INSERT INTO eav_products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
         (?,?,?,?,?)",array(

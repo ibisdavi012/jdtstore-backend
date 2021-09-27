@@ -5,7 +5,7 @@ abstract class ProductModel extends BaseModel {
 
     public function __construct()
     {
-        parent::__construct('products');
+        parent::__construct('eav_products');
     }
 
     public function findAll() {

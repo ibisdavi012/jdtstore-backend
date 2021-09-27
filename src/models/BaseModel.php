@@ -28,6 +28,10 @@ abstract class BaseModel {
     public function getErrors() {
         return $this->errors;
     }
+
+    protected function logError($source,$description) {
+        $this->errors[$source] = $description;
+    }
     
     public function __construct($db_table) {
         $this->db_table = $db_table;
@@ -60,6 +64,7 @@ abstract class BaseModel {
 
         // Ejecutamos     
         if(!$this->query_statement->execute()){
+            $this->logError('DATABASE_QUERY_EXECUTION', $this->query_statement->errorInfo());
             return false;
         }
                      
@@ -72,6 +77,10 @@ abstract class BaseModel {
 
         if(strpos($query,'INSERT') !== false){
             return $this->db_connection_handle->lastInsertId();
+        }
+
+        if(strpos($query,'DELETE') !== false || strpos($query,'UPDATE') !== false){
+            return $this->query_statement->rowCount();
         }
 
         return $query_result;

@@ -71,7 +71,7 @@ class ProductController extends BaseController {
                     $this->send_response("The product was saved with id = $productId.", 1, $product->toArray(),false);
                 }
                 else {
-                    $this->send_response("The product could not be saved.", 0, null,true);
+                    $this->send_response("The product could not be saved.", 0, $product->getErrors(),true);
                 }
             }            
         }
@@ -82,10 +82,23 @@ class ProductController extends BaseController {
     }
 
     public function DELETE($id) {
+        if(is_null($id))
+        {
+            $this->send_response("Invalid ID",0,null,true);
+        }
+
         $product = new Product();
+        
         $product->setId($id);
-        $product->delete();
-        $this->send_response("OK",0,null,false);
+        
+        if(count($product->getErrors()) > 0 || !$product->delete())
+        {
+            $this->send_response("Product with id $id was not deleted.", 0, $product->getErrors(),true);            
+        }
+        else
+        {
+            $this->send_response($id,1,array('deleted_id'=>$id),false);
+        }        
     }
 
    

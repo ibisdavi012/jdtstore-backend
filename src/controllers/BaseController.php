@@ -29,7 +29,8 @@ abstract class BaseController {
                     'content'       => $content
             )
         );
-
+        
+        exit;
         
     }
     

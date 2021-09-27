@@ -13,7 +13,7 @@ class Product extends ProductModel {
     protected $type = 'dvd';
 
     public function __construct() {
-        parent::__construct('products');        
+        parent::__construct('eav_products');        
     }
 
         // ID
@@ -77,12 +77,12 @@ class Product extends ProductModel {
         // Price
         public function setPrice($price) {           
 
-            if(!is_float($price)){
-                $this->errors['price'] = 'Invalid format. It must be a valid amount prefixed with the $ sign. Ex. $1,000.00 / $34.75';
+            if(!is_numeric($price)){
+                $this->errors['price'] = 'Invalid format. It must be a valid number in the Standard American format. Ex. 1,000.00 / 34.75';
                 return false;
             }
 
-            $this->price = $price;
+            $this->price = (float)$price;
             
             return true;
         }
@@ -117,16 +117,14 @@ class Product extends ProductModel {
 
         protected function setAttribute($attribute,$value,$unit)
         {
-            $validValue = preg_match('/^(\d+|\d+\.[\d]{1,2})\s{0,1}kg$/i',$value);
+            $validValue = preg_match("/^(\d+|\d+\.[\d]{1,2})\s{0,1}[$unit]{0,1}$/i",$value);
         
             if(!$validValue) {         
                 $this->errors[$attribute] = "It must be express in $unit. Follow the format: 12$unit / 15 $unit / 25.10$unit / 17.23 $unit";        
                 return false;
             }
-            
-            $newValue = floatval(trim(preg_replace('/\w{2}$/','',$value)));        
-    
-            $this->{$attribute} = $newValue;        
+                       
+            $this->{$attribute} = $value;        
     
             return true;
         }
@@ -147,8 +145,7 @@ class Product extends ProductModel {
             return false;
         }
         
-        $r =  $this->deleteById($this->getId());
-        return $r;
+        return  $this->deleteById($this->getId());        
     }
     public function update(){}
 }

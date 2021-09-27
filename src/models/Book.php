@@ -29,7 +29,7 @@ class Book extends Product {
     }
 
     public function save(){
-        $insert_id = $this->execute_query("INSERT INTO products 
+        $insert_id = $this->execute_query("INSERT INTO eav_products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
         (?,?,?,?,?)",array(
