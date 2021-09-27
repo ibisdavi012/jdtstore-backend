@@ -23,7 +23,7 @@ class Furniture extends Product {
     }
 
     public function getHeight() {
-        return $this->height . 'cm';
+        return $this->height;
     }
 
     // Width
@@ -32,16 +32,16 @@ class Furniture extends Product {
     }
 
     public function getWidth() {
-        return $this->width .'cm';
+        return $this->width;
     }
 
     // Length
     public function setLength($length) {
-        return $this->setAttribute('lenth',$length,'cm');
+        return $this->setAttribute('length',$length,'cm');
     }
 
     public function getLength() {
-        return $this->length .'cm';
+        return $this->length;
     }
 
     public function toArray(){
