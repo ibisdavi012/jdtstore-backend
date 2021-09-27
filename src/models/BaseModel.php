@@ -15,6 +15,8 @@ abstract class BaseModel {
    
     protected $db_table;
 
+    protected $errors = array();
+
     protected $db_connection_handle = null;
 
     protected $query_statement = null;
@@ -22,6 +24,10 @@ abstract class BaseModel {
     protected $parseable_attributes;
 
     protected $custom_attributes;
+
+    public function getErrors() {
+        return $this->errors;
+    }
     
     public function __construct($db_table) {
         $this->db_table = $db_table;
@@ -63,6 +69,10 @@ abstract class BaseModel {
         while ($row = $this->query_statement->fetch()){
             $query_result[] = $row; 
         }   
+
+        if(strpos($query,'INSERT') !== false){
+            return $this->db_connection_handle->lastInsertId();
+        }
 
         return $query_result;
     }

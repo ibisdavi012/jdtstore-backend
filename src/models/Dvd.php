@@ -14,11 +14,11 @@ class Dvd extends Product {
     }   
 
     public function setSize($size) {
-        $this->size = $size;
+        return $this->setAttribute('size',$size,'Mb');
     }
 
     public function getSize() {
-        return $this->size;
+        return $this->size . "Mb";
     }
     
     public function toArray(){

@@ -19,29 +19,29 @@ class Furniture extends Product {
     }   
     // Height
     public function setHeight($height) {
-        $this->height = $height;
+        return $this->setAttribute('height',$height,'cm');
     }
 
     public function getHeight() {
-        return $this->height;
+        return $this->height . 'cm';
     }
 
     // Width
     public function setWidth($width) {
-        $this->width = $width;
+        return $this->setAttribute('width',$width,'cm');
     }
 
     public function getWidth() {
-        return $this->width;
+        return $this->width .'cm';
     }
 
     // Length
     public function setLength($length) {
-        $this->length = $length;
+        return $this->setAttribute('lenth',$length,'cm');
     }
 
     public function getLength() {
-        return $this->length;
+        return $this->length .'cm';
     }
 
     public function toArray(){

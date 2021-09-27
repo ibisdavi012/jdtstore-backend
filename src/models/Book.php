@@ -14,21 +14,22 @@ class Book extends Product {
     }   
 
     public function setWeight($weight) {
-        $this->weight = $weight;
+             
+        return $this->setAttribute('weight',$weight,'Kg');;
     }
 
     public function getWeight() {
         return $this->weight;
     }
     
-    public function toArray(){
+    public function toArray(){                        
         $attributes =parent::toArray();
         $attributes['weight'] = $this->getWeight();
         return $attributes;
     }
 
     public function save(){
-        $save_result = $this->execute_query("INSERT INTO products 
+        $insert_id = $this->execute_query("INSERT INTO products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
         (?,?,?,?,?)",array(
@@ -38,6 +39,12 @@ class Book extends Product {
             $this->getType(),
             "{\"weight\":{$this->getWeight()}}"
         ));
+
+        if($insert_id > 0) {
+            $this->setId($insert_id);
+            return $insert_id;
+        }
+        return null;
     }
     public function delete(){}
     public function update(){}

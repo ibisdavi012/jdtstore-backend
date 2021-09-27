@@ -28,10 +28,14 @@ class ProductController extends BaseController {
         }
         else{
             $result = $products->findById($id);
-            header(HTTP404);
+            if(is_array($result)){
+            $this->send_response("",1,$result);
+            }
+            else{
+                header(HTTP404);
+            }
         }        
-        
-        $this->send_response($result);
+                
     }
 
     public function POST() {          
@@ -49,11 +53,27 @@ class ProductController extends BaseController {
         $type = 'App\\Models\\' . ucfirst($attributes['type']);
 
         if(class_exists($type,true)){            
-            $product = new $type();
+            $product = new $type();            
+
             $product->parse($post_body); 
-            $product->save();
-            $this-send_response('OK');
+
+            $errors = $product->getErrors();
             
+            // ifthe product has wrong values
+            if(count($errors) > 0) {
+                $this->send_response("Product can't be saved. Please, check input values.", 0, $errors,true);
+            }
+            else{
+                
+                $productId = $product->save();
+
+                if($productId) {
+                    $this->send_response("The product was saved with id = $productId.", 1, $product->toArray(),false);
+                }
+                else {
+                    $this->send_response("The product could not be saved.", 0, null,true);
+                }
+            }            
         }
         else {
             header(HTTP400);
