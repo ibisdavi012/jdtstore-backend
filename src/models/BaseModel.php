@@ -82,6 +82,10 @@ abstract class BaseModel {
         return $this->execute_query("SELECT * FROM {$this->db_table}");
     }
 
+    protected function deleteById($id) {
+        return $this->execute_query("DELETE FROM {$this->db_table} WHERE id = $id");
+    }
+
     private function extractAttributes($source,$attributesList) {
 
         if(is_null($source) || !$source){

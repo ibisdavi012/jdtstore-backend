@@ -82,6 +82,10 @@ class ProductController extends BaseController {
     }
 
     public function DELETE($id) {
+        $product = new Product();
+        $product->setId($id);
+        $product->delete();
+        $this->send_response("OK",0,null,false);
     }
 
    

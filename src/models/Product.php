@@ -2,7 +2,7 @@
 namespace App\Models;
 
 class Product extends ProductModel {
-    protected $id;
+    protected $id = null;
     
     protected $sku = '';
 
@@ -140,6 +140,15 @@ class Product extends ProductModel {
             $this->getPrice(),
             $this->getType()
         ));}
-    public function delete(){}
+
+    public function delete(){
+        if($this->id === null){
+            $this->errors['id'] = 'You must specify a valid ID.';
+            return false;
+        }
+        
+        $r =  $this->deleteById($this->getId());
+        return $r;
+    }
     public function update(){}
 }

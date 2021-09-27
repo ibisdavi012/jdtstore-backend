@@ -30,11 +30,12 @@ abstract class BaseController {
             )
         );
 
-        exit;
+        
     }
     
     public function OPTIONS() {        
         $this->sendHeaders();
+        header(HTTP200);
     }
 
     public abstract function GET($id);
