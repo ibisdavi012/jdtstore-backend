@@ -38,6 +38,11 @@ They are responsible for handling the data, storing and deleting. There are 6 mo
 - Copy repository files in the public of your server.
 - Execute the sql file database/jdtstore.sql
 
+Make sure to copy the .htaccess because this files contains a rule that redirects al requets to the same endpoint.
+
+## CORS
+This projects sends headers to avoid CORS issues.
+
 ## User Interfacte
 Since it is the backend, there is no UI code. You can check a react project built for this purpose [See React Frontend project](https://github.com/ibisdavi012/jdtstore-ui)
 
