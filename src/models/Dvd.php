@@ -1,38 +1,70 @@
 <?php
+
 namespace App\Models;
 
-class Dvd extends Product {
-
+/**
+ * Dvd - extends the Product class to provide a custom field
+ *
+ * @author      David Márquez <ibisdavi012@gmail.com>
+ * @license     MIT
+ *
+ */
+class Dvd extends Product
+{
     protected $size = 0;
-    
-    public function __construct(){
-        $this->parseable_attributes = array('id','sku','name','price','type');
-        
+
+    public function __construct()
+    {
+        $this->parseable_attributes = array('id', 'sku', 'name', 'price', 'type');
         $this->custom_attributes = array('size');
-
         parent::__construct();
-    }   
-
-    public function setSize($size) {
-        return $this->setAttribute('size',$size,'Mb');
     }
 
-    public function getSize() {
+    /**
+     * Validates and sets Dvd's Size
+     *
+     * @param  mixed $size
+     * @return bool
+     */
+    public function setSize($size)
+    {
+        return $this->setAttribute('size', $size, 'Mb');
+    }
+
+    /**
+     * Returns the Dvd's size
+     *
+     * @return float
+     */
+    public function getSize()
+    {
         return $this->size;
     }
-    
-    public function toArray(){
-        
-        $attributes =parent::toArray();
+
+    /**
+     * Returns an array with the Dvd's attributes
+     *
+     * @return void
+     */
+    public function toArray()
+    {
+
+        $attributes = parent::toArray();
         $attributes['size'] = $this->getSize();
         return $attributes;
     }
 
-    public function save(){
-        $save_result = $this->execute_query("INSERT INTO eav_products 
+    /**
+     * Saves the Dvd to the Database
+     *
+     * @return void
+     */
+    public function save()
+    {
+        $save_result = $this->executeQuery("INSERT INTO eav_products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
-        (?,?,?,?,?)",array(
+        (?,?,?,?,?)", array(
             $this->getSku(),
             $this->getName(),
             $this->getPrice(),
@@ -40,7 +72,22 @@ class Dvd extends Product {
             "{\"size\":{$this->getSize()}}"
         ));
     }
-    public function delete(){}
-    public function update(){}
 
+    /**
+     * TODO: Implements a new delete functionality if the databse model is changed into an EAV model.
+     *
+     * @return void
+     */
+    public function delete()
+    {
+    }
+
+    /**
+     * TODO: Implements a new update functionality if the databse model is changed into an EAV model.
+     *
+     * @return void
+     */
+    public function update()
+    {
+    }
 }

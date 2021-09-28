@@ -5,101 +5,126 @@ namespace App\Controllers;
 use App\Models\Product;
 use App\Models\Book;
 
-class ProductController extends BaseController {
+/**
+ * ProductController - This is the Controller that will handle incomming requests to the /products (endpoint)
+ *
+ * @author      David Márquez <ibisdavi012@gmail.com>
+ * @license     MIT
+ *
+ */
+class ProductController extends BaseController
+{
 
-    public function GET($id) {
-        
+    /**
+     * Handle GET requests
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function get($id)
+    {
         $products = new Product();
-    
-        if(is_null($id))
-        {                        
+
+        // If no ID is provided, then fetch all products
+        if (is_null($id)) {
             $result = $products->findAll();
-            
-            if(is_null($result)){            
-                $this->send_response('No products were found.',0,null);
-            }else {
+
+            // If no records were found, send response
+            if (is_null($result)) {
+                $this->sendResponse('No products were found.', 0, null);
+            } else {
                 $productList = array();
+
+                // Convert each product to Array in orther to to pack then togueter before
+                // sending them in the Response JSON
                 foreach ($result as $product) {
                     $productList[] = $product->toArray();
                 }
 
-                $this->send_response("",count($result),$productList);                
+                // Send the response including the Products
+                $this->sendResponse("", count($result), $productList);
             }
-        }
-        else{
+        } else {
+            // If an ID was provided, then Fetch it and send it in the response
             $result = $products->findById($id);
-            if(is_array($result)){
-            $this->send_response("",1,$result);
-            }
-            else{
+            if (is_array($result)) {
+                $this->sendResponse("", 1, $result);
+            } else {
                 header(HTTP404);
             }
-        }        
-                
+        }
     }
 
-    public function POST() {          
-        
+
+    /**
+     * Handle POST Requests
+     *
+     * @return void
+     */
+    public function post()
+    {
+
         $post_body = file_get_contents('php://input');
-        
-        $attributes = json_decode($post_body,true);
-        
-        if(!is_array($attributes) || !in_array("type",array_keys($attributes)))
-        {
-            header(HTTP404);
-            exit; 
+
+        $attributes = json_decode($post_body, true);
+
+        // Send HTTP 400 status in case the body of the POST request is not
+        // formatted accordingly.
+        if (!is_array($attributes) || !in_array("type", array_keys($attributes))) {
+            header(HTTP400);
+            exit;
         }
-        
+
+        // Define a model that will be load depending of the 'type'
+        // field provided in the POST body
         $type = 'App\\Models\\' . ucfirst($attributes['type']);
 
-        if(class_exists($type,true)){            
-            $product = new $type();            
+        // Check if the model class exists, and in case it does create an instance.
+        if (class_exists($type, true)) {
+            $product = new $type();
 
-            $product->parse($post_body); 
+            $product->parse($post_body);
 
             $errors = $product->getErrors();
-            
-            // ifthe product has wrong values
-            if(count($errors) > 0) {
-                $this->send_response("Product can't be saved. Please, check input values.", 0, $errors,true);
-            }
-            else{
-                
+
+            // if the product has wrong values
+            if (count($errors) > 0) {
+                $this->sendResponse("Product can't be saved. Please, check input values.", 0, $errors, true);
+            } else {
                 $productId = $product->save();
 
-                if($productId) {
-                    $this->send_response("The product was saved with id = $productId.", 1, $product->toArray(),false);
+                if ($productId) {
+                    $this->sendResponse("The product was saved with id = $productId.", 1, $product->toArray(), false);
+                } else {
+                    $this->sendResponse("The product could not be saved.", 0, $product->getErrors(), true);
                 }
-                else {
-                    $this->send_response("The product could not be saved.", 0, $product->getErrors(),true);
-                }
-            }            
-        }
-        else {
+            }
+        } else {
             header(HTTP400);
-            exit; 
+            exit;
         }
     }
 
-    public function DELETE($id) {
-        if(is_null($id))
-        {
-            $this->send_response("Invalid ID",0,null,true);
+    /**
+     * Handle DELETE Requests
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function delete($id)
+    {
+        if (is_null($id)) {
+            $this->sendResponse("Invalid ID", 0, null, true);
         }
 
         $product = new Product();
-        
-        $product->setId($id);
-        
-        if(count($product->getErrors()) > 0 || !$product->delete())
-        {
-            $this->send_response("Product with id $id was not deleted.", 0, $product->getErrors(),true);            
-        }
-        else
-        {
-            $this->send_response($id,1,array('deleted_id'=>$id),false);
-        }        
-    }
 
-   
+        $product->setId($id);
+
+        if (count($product->getErrors()) > 0 || !$product->delete()) {
+            $this->sendResponse("Product with id $id was not deleted.", 0, $product->getErrors(), true);
+        } else {
+            $this->sendResponse($id, 1, array('deleted_id' => $id), false);
+        }
+    }
 }

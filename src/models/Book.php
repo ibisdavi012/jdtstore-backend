@@ -1,52 +1,97 @@
 <?php
+
 namespace App\Models;
 
-class Book extends Product {
-
+/**
+ * Book - extends the Product class to provide a custom field
+ *
+ * @author      David Márquez <ibisdavi012@gmail.com>
+ * @license     MIT
+ *
+ */
+class Book extends Product
+{
     protected $weight = 0;
-    
-    public function __construct(){
-        $this->parseable_attributes = array('id','sku','name','price','type');
-        
+
+    public function __construct()
+    {
+        $this->parseable_attributes = array('id', 'sku', 'name', 'price', 'type');
         $this->custom_attributes = array('weight');
-
         parent::__construct();
-    }   
-
-    public function setWeight($weight) {
-             
-        return $this->setAttribute('weight',$weight,'Kg');;
     }
 
-    public function getWeight() {
+    /**
+     * Validates and sets the Weight
+     *
+     * @param  float $weight
+     * @return bool
+     */
+    public function setWeight($weight)
+    {
+        return $this->setAttribute('weight', $weight, 'Kg');
+    }
+
+    /**
+     * Returns Book's weight
+     *
+     * @return float
+     */
+    public function getWeight()
+    {
         return $this->weight;
     }
-    
-    public function toArray(){                        
-        $attributes =parent::toArray();
+
+    /**
+     * Generates and returns an array with the attributes of the book
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $attributes = parent::toArray();
         $attributes['weight'] = $this->getWeight();
         return $attributes;
     }
 
-    public function save(){
-        $insert_id = $this->execute_query("INSERT INTO eav_products 
+    /**
+     * Saves the book to the database and returns the new ID
+     *
+     * @return int
+     */
+    public function save()
+    {
+        $insert_id = $this->executeQuery("INSERT INTO eav_products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
-        (?,?,?,?,?)",array(
+        (?,?,?,?,?)", array(
             $this->getSku(),
             $this->getName(),
             $this->getPrice(),
             $this->getType(),
             "{\"weight\":{$this->getWeight()}}"
         ));
-
-        if($insert_id > 0) {
+        if ($insert_id > 0) {
             $this->setId($insert_id);
             return $insert_id;
         }
         return null;
     }
-    public function delete(){}
-    public function update(){}
 
+    /**
+     * TODO: Implements a new delete functionality if the databse model is changed into an EAV model.
+     *
+     * @return void
+     */
+    public function delete()
+    {
+    }
+
+    /**
+     * TODO: Implements a new update functionality if the databse model is changed into an EAV model.
+     *
+     * @return void
+     */
+    public function update()
+    {
+    }
 }
