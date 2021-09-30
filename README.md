@@ -50,3 +50,9 @@ Since it is the backend, there is no UI code. You can check a react project buil
 [Backend @ 000webhost](https://jdtstore.000webhostapp.com/)
 
 [Frontend @ Netlify](https://frosty-darwin-651925.netlify.app/)
+
+## Additional notes
+000webhost does not allow free accounts to make DELETE requests. Therefore, an alternative DELETE method was implemented using GET method.
+
+    GET: http://server/products/delete/{:id}
+
