@@ -26,9 +26,10 @@ class Router
 
     private $routes;
 
+    private $alternativeDelete;
+
     public function __construct()
     {
-
         $this->routes = array();
 
         $this->parseUri();
@@ -59,9 +60,16 @@ class Router
                 // Extract the ID from the third segment of the Uri
                 $this->requestedId = $this->uriSegments[2];
             } else {
-                // Send 404 Error if the URI segments are wrogly formatted
-                header(HTTP404);
-                exit;
+                // 000Webhost doesn't allow a free acount to handle DELETE requests.
+                // so it will be hanlde using GET and /delete/:id (as route)
+                if (strtolower($this->uriSegments[2]) === 'delete' && count($this->uriSegments) === 4) {
+                    $this->alternativeDelete = true;
+                    $this->requestedId = $this->uriSegments[3];
+                } else {
+                    // Send 404 Error if the URI segments are wrogly formatted
+                    header(HTTP404);
+                    exit;
+                }
             }
         }
     }
@@ -89,7 +97,6 @@ class Router
     {
 
         $route_names = array_keys($this->routes);
-
 
         if (in_array($this->requestedEndPoint, $route_names)) {
             $target = $this->routes[$this->requestedEndPoint];
@@ -122,7 +129,13 @@ class Router
             header(HTTP404);
         } else {
             $this->controller = new $controller();
-            $this->controller->{$this->requestMethod}($this->requestedId);
+
+            // If alternativeDelete is TRUE, then invoke the DELETE function of the controller
+            if ($this->alternativeDelete) {
+                $this->controller->delete($this->requestedId);
+            } else {
+                $this->controller->{$this->requestMethod}($this->requestedId);
+            }
         }
     }
 }

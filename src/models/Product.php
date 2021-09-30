@@ -35,7 +35,7 @@ class Product extends ProductModel
             $this->errors[] = 'Id is invalid';
             return false;
         }
-        $this->id = $id;
+        $this->id = intval($id);
         return true;
     }
 
