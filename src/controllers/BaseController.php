@@ -24,11 +24,9 @@ abstract class BaseController
      */
     public function sendHeaders()
     {
-        header(HTTP_CORS);
-        header(HTTP_ACEH);
-        header(HTTP_ACAH);
-        header(HTTP_ACAM);
-        header(HTTP_JSON);
+        header("Access-Control-Allow-Origin: https://frosty-darwin-651925.netlify.app");
+        header("Access-Control-Allow-Headers: GET, POST, DELETE, OPTIONS");
+        header('Content-Type: application/json; charset=utf-8');
     }
 
     /**
@@ -66,7 +64,7 @@ abstract class BaseController
     public function options()
     {
         $this->sendHeaders();
-        header(HTTP200);
+        exit;
     }
 
     abstract public function get($id);
