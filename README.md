@@ -46,6 +46,7 @@ This projects sends headers to avoid CORS issues.
 ## User Interfacte
 Since it is the backend, there is no UI code. You can check a react project built for this purpose [See React Frontend project](https://github.com/ibisdavi012/jdtstore-ui)
 
-## Live version
-There is a live version of the full project. The Frontend is hosted at Netlify, and the backend at InfinityFreeApp.
-[See Live version hosted at Netlify](https://frosty-darwin-651925.netlify.app/)
+## Live version (Backend)
+[Backend @ 000webhost](https://jdtstore.000webhostapp.com/)
+
+[Frontend @ Netlify](https://frosty-darwin-651925.netlify.app/)
