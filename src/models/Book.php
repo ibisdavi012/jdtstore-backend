@@ -28,7 +28,7 @@ class Book extends Product
      */
     public function setWeight($weight)
     {
-        return $this->setAttribute('weight', $weight, 'Kg');
+        return $this->setAttribute('weight', $weight);
     }
 
     /**

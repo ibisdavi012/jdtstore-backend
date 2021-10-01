@@ -196,20 +196,14 @@ class Product extends ProductModel
      * @param  string $unit
      * @return void
      */
-    protected function setAttribute($attribute, $value, $unit)
-    {
-
-        $validValue = preg_match("/^(\d+|\d+\.[\d]{1,2})\s{0,1}($unit){0,1}$/i", $value);
-        if (!$validValue) {
-            $this->errors[$attribute] = "It must be express in $unit. Follow the format: 12$unit / 15 $unit / 25.10$unit / 17.23 $unit";
+    protected function setAttribute($attribute, $value)
+    {        
+        if (!is_numeric($value)) {
+            $this->errors[$attribute] = "It must be a valid number.";
             return false;
         }
-
-        if (is_string($value)) {
-            $this->{$attribute} = (float)trim(preg_replace('/[a-zA-Z]/', '', $value));
-        } else {
-            $this->{$attribute} = (float)$value;
-        }
+      
+        $this->{$attribute} = (float)$value;        
 
         return true;
     }

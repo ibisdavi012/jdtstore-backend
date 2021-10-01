@@ -28,7 +28,7 @@ class Dvd extends Product
      */
     public function setSize($size)
     {
-        return $this->setAttribute('size', $size, 'Mb');
+        return $this->setAttribute('size', $size);
     }
 
     /**

@@ -31,7 +31,7 @@ class Furniture extends Product
      */
     public function setHeight($height)
     {
-        return $this->setAttribute('height', $height, 'cm');
+        return $this->setAttribute('height', $height);
     }
 
     /**
@@ -52,7 +52,7 @@ class Furniture extends Product
      */
     public function setWidth($width)
     {
-        return $this->setAttribute('width', $width, 'cm');
+        return $this->setAttribute('width', $width);
     }
 
     /**
@@ -74,7 +74,7 @@ class Furniture extends Product
      */
     public function setLength($length)
     {
-        return $this->setAttribute('length', $length, 'cm');
+        return $this->setAttribute('length', $length);
     }
 
     /**
