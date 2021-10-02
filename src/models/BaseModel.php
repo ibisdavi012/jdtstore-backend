@@ -122,7 +122,7 @@ abstract class BaseModel
      */
     protected function findAll()
     {
-        return $this->executeQuery("SELECT * FROM {$this->db_table}");
+        return $this->executeQuery("SELECT * FROM {$this->db_table} ORDER BY id ASC");
     }
 
     /**
