@@ -12,9 +12,24 @@ namespace App\Models;
 abstract class ProductModel extends BaseModel
 {
 
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         parent::__construct('eav_products');
+    }
+
+    /**
+     * __destruct
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->db_connection_handle = null;
     }
 
     /**
