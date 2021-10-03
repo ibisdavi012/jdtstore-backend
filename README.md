@@ -41,7 +41,23 @@ They are responsible for handling the data, storing and deleting. There are 6 mo
 Make sure to copy the .htaccess because this files contains a rule that redirects al requets to the same endpoint.
 
 ## CORS
-This projects sends headers to avoid CORS issues.
+This projects sends headers to avoid CORS issues. However, it only allows the UI origin.
+
+## Responses
+The server responses in JSON, and follows the format:
+
+    {"status":"","api_version":"","message":"","affected_rows":0,"content":null}
+
+* status: Either ERROR or OK depending on the result of the request.
+* api_version: API current version (Ex. v1.0)
+* message: It contains easy to understand details about the last request.
+* affected_rows: It represents how many rows were affected after executing the last request.
+* content: It is either NULL or an array. The array version can be the newly inserted or deleted item. It can also the array of errors found.
+
+A response would be like:
+    
+    {"status":"OK","api_version":"1.0","message":"No products were found.","affected_rows":0,"content":null}
+
 
 ## User Interfacte
 Since it is the backend, there is no UI code. You can check a react project built for this purpose [See React Frontend project](https://github.com/ibisdavi012/jdtstore-ui)
