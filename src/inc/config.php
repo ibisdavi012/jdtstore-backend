@@ -1,10 +1,10 @@
 <?php
 
 // Database Settings
-define('DATABASE_HOST', 'localhost');
-define('DATABASE_NAME', 'id17682141_jdtstore');
-define('DATABASE_USER', 'id17682141_root');
-define('DATABASE_PASSWORD', ']MEa2J8RxKd>aqNT');
+define('DATABASE_HOST', '');
+define('DATABASE_NAME', '');
+define('DATABASE_USER', '');
+define('DATABASE_PASSWORD', '');
 
 // HTTP headers
 define('HTTP200', '"HTTP/1.1 200 OK"');
