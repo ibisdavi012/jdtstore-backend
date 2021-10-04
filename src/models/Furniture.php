@@ -100,7 +100,7 @@ class Furniture extends Product
     public function save()
     {
 
-        $save = $this->executeQuery("INSERT INTO eav_products 
+        $lastInsertedId = $this->executeQuery("INSERT INTO eav_products 
                                 (sku,name, price, type, custom_attributes) 
                             VALUES 
                                 (?,?,?,?,?)", array(
@@ -112,6 +112,12 @@ class Furniture extends Product
                                         \"width\":{$this->getWidth()},
                                         \"length\":{$this->getLength()}}",
         ));
+
+        if ($lastInsertedId > 0) {
+            $this->setId($lastInsertedId);
+            return $lastInsertedId;
+        }
+        return null;
     }
     /**
      * TODO: Implements a new delete functionality if the databse model is changed into an EAV model.

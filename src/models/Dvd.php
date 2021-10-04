@@ -61,7 +61,7 @@ class Dvd extends Product
      */
     public function save()
     {
-        $save_result = $this->executeQuery("INSERT INTO eav_products 
+        $lastInsertedId = $this->executeQuery("INSERT INTO eav_products 
         (sku,name, price, type, custom_attributes) 
     VALUES 
         (?,?,?,?,?)", array(
@@ -71,6 +71,12 @@ class Dvd extends Product
             $this->getType(),
             "{\"size\":{$this->getSize()}}"
         ));
+
+        if ($lastInsertedId > 0) {
+            $this->setId($lastInsertedId);
+            return $lastInsertedId;
+        }
+        return null;
     }
 
     /**
