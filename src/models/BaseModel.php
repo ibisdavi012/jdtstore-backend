@@ -66,7 +66,7 @@ abstract class BaseModel
             $dsn = sprintf("mysql:host=%s;dbname=%s", DATABASE_HOST, DATABASE_NAME);
             $this->db_connection_handle = new PDO($dsn, DATABASE_USER, DATABASE_PASSWORD);
         } catch (PDOException $e) {
-            echo $e->getMessage();
+            $this->logError("MYSQL_CONNECT", "MySQL connection error.");
         }
     }
 
